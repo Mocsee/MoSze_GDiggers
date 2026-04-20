@@ -4,7 +4,11 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 28
+<<<<<<< HEAD
   productGUID: a17f69a64d1f7f34ebbf1d324e99de22
+=======
+  productGUID: 87fce8b9e13ca8b4ab448c5a68350c88
+>>>>>>> c4b330917d8a0fa4e756655ba8e88265c30f84bb
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -13,7 +17,11 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
+<<<<<<< HEAD
   productName: GoldDiggers2D
+=======
+  productName: My project
+>>>>>>> c4b330917d8a0fa4e756655ba8e88265c30f84bb
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -604,14 +612,22 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
+<<<<<<< HEAD
   metroPackageName: GoldDiggers2D
+=======
+  metroPackageName: My project
+>>>>>>> c4b330917d8a0fa4e756655ba8e88265c30f84bb
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
+<<<<<<< HEAD
   metroApplicationDescription: GoldDiggers2D
+=======
+  metroApplicationDescription: My project
+>>>>>>> c4b330917d8a0fa4e756655ba8e88265c30f84bb
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -680,6 +696,7 @@ PlayerSettings:
   qnxGraphicConfPath: 
   apiCompatibilityLevel: 6
   captureStartupLogs: {}
+<<<<<<< HEAD
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
   cloudProjectId: 51732859-e018-4c75-a29c-f54759ed0737
@@ -687,6 +704,15 @@ PlayerSettings:
   qualitySettingsNames: []
   projectName: GoldDiggers2D
   organizationId: patakiarpad11
+=======
+  activeInputHandler: 1
+  windowsGamepadBackendHint: 0
+  cloudProjectId: 34beed80-d0c1-4724-88c2-62d9312b03f8
+  framebufferDepthMemorylessMode: 0
+  qualitySettingsNames: []
+  projectName: My project
+  organizationId: mocsee
+>>>>>>> c4b330917d8a0fa4e756655ba8e88265c30f84bb
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

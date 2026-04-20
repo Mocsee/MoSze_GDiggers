@@ -2,7 +2,14 @@
 /[Tt]emp/
 /[Oo]bj/
 /[Bb]uild/
+<<<<<<< HEAD
 /[Bb]uilds/
 /[Ll]ogs/
 /[Mm]emoryCaptures/
 .vs/
+=======
+/[Log]s/
+/[Uu]serSettings/
+*.csproj
+*.sln
+>>>>>>> c4b330917d8a0fa4e756655ba8e88265c30f84bb

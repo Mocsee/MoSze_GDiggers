@@ -2,10 +2,15 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
+<<<<<<< HEAD
   serializedVersion: 3
   tags:
   - Platform
   - Ground
+=======
+  serializedVersion: 2
+  tags: []
+>>>>>>> c4b330917d8a0fa4e756655ba8e88265c30f84bb
   layers:
   - Default
   - TransparentFX
@@ -13,8 +18,13 @@ TagManager:
   - 
   - Water
   - UI
+<<<<<<< HEAD
   - Ground
   - Platform
+=======
+  - 
+  - 
+>>>>>>> c4b330917d8a0fa4e756655ba8e88265c30f84bb
   - 
   - 
   - 
@@ -43,5 +53,8 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+<<<<<<< HEAD
   m_RenderingLayers:
   - Default
+=======
+>>>>>>> c4b330917d8a0fa4e756655ba8e88265c30f84bb
