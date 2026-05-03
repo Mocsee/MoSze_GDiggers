@@ -22,8 +22,6 @@ public class SlowZone : MonoBehaviour
 
     private void Start()
     {
-        if (!initialized)
-            SetupZone();
     }
 
     private void SetupZone()
@@ -45,6 +43,7 @@ public class SlowZone : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (!initialized) return;
         if (!other.CompareTag("Player")) return;
 
         PlayerMovement playerMovement = other.GetComponent<PlayerMovement>();

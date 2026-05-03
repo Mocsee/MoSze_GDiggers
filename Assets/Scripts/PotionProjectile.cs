@@ -26,7 +26,8 @@ public class PotionProjectile : MonoBehaviour
 
     private void Start()
     {
-        Destroy(gameObject, lifetime);
+        if (initialized)
+            Destroy(gameObject, lifetime);
     }
 
     private void Update()

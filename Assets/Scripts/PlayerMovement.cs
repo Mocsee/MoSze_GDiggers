@@ -30,6 +30,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float deathOffsetBelowCamera = 5f;
     [SerializeField] private float deathCheckDelay = 10f;
 
+    [Header("Sprites")]
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Sprite idleSprite;
+    [SerializeField] private Sprite[] movingSprites;
+    [SerializeField] private float framesPerSecond = 10f;
+
     private Rigidbody2D body;
     private BoxCollider2D boxCollider;
     private float timeSinceSceneLoad;
@@ -38,6 +44,8 @@ public class PlayerMovement : MonoBehaviour
     private float coyoteCounter;
     private float speedMultiplier = 1f;
     private Coroutine slowCoroutine;
+    private float animationTimer;
+    private int animationIndex;
 
     public bool IsSprinting { get; private set; }
 
@@ -45,6 +53,8 @@ public class PlayerMovement : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponent<SpriteRenderer>();
         startingPosition = transform.position;
 
         if (mainCamera == null)
@@ -91,6 +101,39 @@ public class PlayerMovement : MonoBehaviour
             body.gravityScale = fallGravity;
         else
             body.gravityScale = normalGravity;
+
+        UpdateSprite(xInput);
+    }
+
+    private void UpdateSprite(float xInput)
+    {
+        if (spriteRenderer == null) return;
+
+        if (xInput > 0.01f)
+            spriteRenderer.flipX = true;
+        else if (xInput < -0.01f)
+            spriteRenderer.flipX = false;
+
+        bool isMoving = Mathf.Abs(xInput) > 0.01f && Mathf.Abs(body.linearVelocity.x) > 0.01f;
+
+        if (isMoving && movingSprites != null && movingSprites.Length > 0)
+        {
+            animationTimer += Time.deltaTime;
+            float frameDuration = framesPerSecond > 0f ? 1f / framesPerSecond : 0.1f;
+            if (animationTimer >= frameDuration)
+            {
+                animationTimer -= frameDuration;
+                animationIndex = (animationIndex + 1) % movingSprites.Length;
+            }
+            spriteRenderer.sprite = movingSprites[animationIndex];
+        }
+        else
+        {
+            animationTimer = 0f;
+            animationIndex = 0;
+            if (idleSprite != null)
+                spriteRenderer.sprite = idleSprite;
+        }
     }
 
     private void LateUpdate()
