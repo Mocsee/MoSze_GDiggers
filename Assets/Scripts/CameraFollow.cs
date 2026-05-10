@@ -10,9 +10,9 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private float yOffset = 2f;
 
     [Header("Zoom")]
-    [SerializeField] private float normalSize = 5f;
-    [SerializeField] private float sprintSize = 6.5f;
-    [SerializeField] private float zoomSpeed = 3f;
+    [SerializeField] private float normalSize = 50f; 
+    [SerializeField] private float sprintSize = 60f;
+    [SerializeField] private float zoomSpeed = 5f;
 
     private Camera cam;
     private float minY;
@@ -42,11 +42,8 @@ public class CameraFollow : MonoBehaviour
     {
         float targetY = target.position.y + yOffset;
 
-        if (targetY > transform.position.y)
-        {
-            float newY = Mathf.Lerp(transform.position.y, targetY, smoothSpeed * Time.deltaTime);
-            transform.position = new Vector3(transform.position.x, newY, transform.position.z);
-        }
+        float newY = Mathf.Lerp(transform.position.y, targetY, smoothSpeed * Time.deltaTime);
+        transform.position = new Vector3(transform.position.x, newY, transform.position.z);
 
         if (transform.position.y < minY)
         {

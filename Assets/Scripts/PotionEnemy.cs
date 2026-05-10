@@ -20,6 +20,11 @@ public class PotionEnemy : MonoBehaviour
     [Header("Visuals")]
     [SerializeField] private SpriteRenderer spriteRenderer;
 
+    [Header("Sprites")]
+    [SerializeField] private Sprite idleSprite;
+    [SerializeField] private Sprite[] movingSprites;
+    [SerializeField] private float framesPerSecond = 10f;
+
     [Header("Pushback")]
     [SerializeField] private float pushStrength = 4f;
     [SerializeField] private float pushDamping = 8f;
@@ -32,6 +37,9 @@ public class PotionEnemy : MonoBehaviour
 
     private Vector2 pushVelocity;
     private float pushCooldownTimer;
+    private bool isMoving;
+    private float animationTimer;
+    private int animationIndex;
 
     private void Start()
     {
@@ -55,6 +63,7 @@ public class PotionEnemy : MonoBehaviour
 
         UpdatePushback();
         HandleBehaviour();
+        UpdateSprite();
     }
 
     private void HandleBehaviour()
@@ -66,6 +75,11 @@ public class PotionEnemy : MonoBehaviour
             MoveTowardsPlayer();
             HandlePotionThrowing();
             UpdateFacingDirection();
+            isMoving = true;
+        }
+        else
+        {
+            isMoving = false;
         }
     }
 
@@ -92,17 +106,41 @@ public class PotionEnemy : MonoBehaviour
 
         if (player.position.x < transform.position.x)
         {
-            spriteRenderer.flipX = true;
+            spriteRenderer.flipX = false;
 
             if (firePoint != null)
                 firePoint.localPosition = new Vector3(-Mathf.Abs(firePointOriginalLocalPosition.x), firePointOriginalLocalPosition.y, firePointOriginalLocalPosition.z);
         }
         else if (player.position.x > transform.position.x)
         {
-            spriteRenderer.flipX = false;
+            spriteRenderer.flipX = true;
 
             if (firePoint != null)
                 firePoint.localPosition = new Vector3(Mathf.Abs(firePointOriginalLocalPosition.x), firePointOriginalLocalPosition.y, firePointOriginalLocalPosition.z);
+        }
+    }
+
+    private void UpdateSprite()
+    {
+        if (spriteRenderer == null) return;
+
+        if (isMoving && movingSprites != null && movingSprites.Length > 0)
+        {
+            animationTimer += Time.deltaTime;
+            float frameDuration = framesPerSecond > 0f ? 1f / framesPerSecond : 0.1f;
+            if (animationTimer >= frameDuration)
+            {
+                animationTimer -= frameDuration;
+                animationIndex = (animationIndex + 1) % movingSprites.Length;
+            }
+            spriteRenderer.sprite = movingSprites[animationIndex];
+        }
+        else
+        {
+            animationTimer = 0f;
+            animationIndex = 0;
+            if (idleSprite != null)
+                spriteRenderer.sprite = idleSprite;
         }
     }
 

@@ -56,6 +56,18 @@ public class PlayerHealth : MonoBehaviour
         StartCoroutine(InvincibilityCoroutine());
     }
 
+    public void TakeFallDamage(int hearts)
+    {
+        if (hearts <= 0) return;
+
+        currentLives -= hearts;
+        UpdateLivesUI();
+        PlayDamageEffect();
+
+        if (currentLives <= 0)
+            Die();
+    }
+
     public void BounceUpAfterStomp(float stompBounceForce)
     {
         body.linearVelocity = new Vector2(body.linearVelocity.x, stompBounceForce);

@@ -142,7 +142,7 @@ public class PlayerMovement : MonoBehaviour
         CheckIfFellBelowCamera();
     }
 
-    private bool IsGrounded()
+    public bool IsGrounded()
     {
         if (boxCollider == null) return false;
 
