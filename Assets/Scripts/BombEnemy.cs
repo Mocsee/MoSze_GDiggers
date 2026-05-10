@@ -15,6 +15,11 @@ public class BombEnemy : MonoBehaviour
     [Header("Visuals")]
     [SerializeField] private SpriteRenderer spriteRenderer;
 
+    [Header("Sprites")]
+    [SerializeField] private Sprite idleSprite;
+    [SerializeField] private Sprite[] movingSprites;
+    [SerializeField] private float framesPerSecond = 10f;
+
     [Header("Pushback")]
     [SerializeField] private float pushStrength = 4f;
     [SerializeField] private float pushDamping = 8f;
@@ -26,17 +31,39 @@ public class BombEnemy : MonoBehaviour
     private float pushCooldownTimer;
     private Vector3 firePointOriginalLocalPosition;
     private Vector2 pushVelocity;
+    private bool isMoving;
+    private float animationTimer;
+    private int animationIndex;
 
     private void Start()
     {
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null)
+        {
             player = playerObject.transform;
+            IgnorePlayerCollisions(playerObject);
+        }
 
         bombTimer = bombCooldown;
 
         if (firePoint != null)
             firePointOriginalLocalPosition = firePoint.localPosition;
+    }
+
+    private void IgnorePlayerCollisions(GameObject playerObject)
+    {
+        Collider2D[] enemyColliders = GetComponentsInChildren<Collider2D>();
+        Collider2D[] playerColliders = playerObject.GetComponentsInChildren<Collider2D>();
+
+        foreach (Collider2D enemyCollider in enemyColliders)
+        {
+            if (enemyCollider.isTrigger) continue;
+            foreach (Collider2D playerCollider in playerColliders)
+            {
+                if (playerCollider.isTrigger) continue;
+                Physics2D.IgnoreCollision(enemyCollider, playerCollider, true);
+            }
+        }
     }
 
     private void Update()
@@ -49,6 +76,7 @@ public class BombEnemy : MonoBehaviour
 
         UpdatePushback();
         HandleBehaviour();
+        UpdateSprite();
     }
 
     private void HandleBehaviour()
@@ -60,6 +88,11 @@ public class BombEnemy : MonoBehaviour
             MoveTowardsPlayer();
             HandleBombThrowing();
             UpdateFacingDirection();
+            isMoving = true;
+        }
+        else
+        {
+            isMoving = false;
         }
     }
 
@@ -86,17 +119,41 @@ public class BombEnemy : MonoBehaviour
 
         if (player.position.x < transform.position.x)
         {
-            spriteRenderer.flipX = true;
+            spriteRenderer.flipX = false;
 
             if (firePoint != null)
                 firePoint.localPosition = new Vector3(-Mathf.Abs(firePointOriginalLocalPosition.x), firePointOriginalLocalPosition.y, firePointOriginalLocalPosition.z);
         }
         else if (player.position.x > transform.position.x)
         {
-            spriteRenderer.flipX = false;
+            spriteRenderer.flipX = true;
 
             if (firePoint != null)
                 firePoint.localPosition = new Vector3(Mathf.Abs(firePointOriginalLocalPosition.x), firePointOriginalLocalPosition.y, firePointOriginalLocalPosition.z);
+        }
+    }
+
+    private void UpdateSprite()
+    {
+        if (spriteRenderer == null) return;
+
+        if (isMoving && movingSprites != null && movingSprites.Length > 0)
+        {
+            animationTimer += Time.deltaTime;
+            float frameDuration = framesPerSecond > 0f ? 1f / framesPerSecond : 0.1f;
+            if (animationTimer >= frameDuration)
+            {
+                animationTimer -= frameDuration;
+                animationIndex = (animationIndex + 1) % movingSprites.Length;
+            }
+            spriteRenderer.sprite = movingSprites[animationIndex];
+        }
+        else
+        {
+            animationTimer = 0f;
+            animationIndex = 0;
+            if (idleSprite != null)
+                spriteRenderer.sprite = idleSprite;
         }
     }
 

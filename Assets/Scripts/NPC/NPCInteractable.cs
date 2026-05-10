@@ -17,6 +17,9 @@ public class NPCInteractable : MonoBehaviour
     [SerializeField] private Color normalColor = Color.white;
     [SerializeField] private Color highlightColor = new Color(1f, 1f, 0.7f, 1f);
 
+    [Header("Behaviour")]
+    [SerializeField] private bool disappearAfterDialogue = false;
+
     private bool playerInRange = false;
     private bool isTalking = false;
     private Coroutine dialogueCoroutine;
@@ -71,11 +74,20 @@ public class NPCInteractable : MonoBehaviour
         if (playerMovement != null)
             playerMovement.enabled = true;
 
-        if (playerInRange && interactPromptObject != null)
-            interactPromptObject.SetActive(true);
-
         isTalking = false;
         dialogueCoroutine = null;
+
+        if (disappearAfterDialogue)
+        {
+            if (interactPromptObject != null)
+                interactPromptObject.SetActive(false);
+
+            Destroy(gameObject);
+            yield break;
+        }
+
+        if (playerInRange && interactPromptObject != null)
+            interactPromptObject.SetActive(true);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

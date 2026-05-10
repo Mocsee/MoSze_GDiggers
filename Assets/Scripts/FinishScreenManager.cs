@@ -5,6 +5,8 @@ public class FinishScreenManager : MonoBehaviour
 {
     [Header("UI")]
     [SerializeField] private GameObject finishScreenUI;
+    [SerializeField] private GameObject winScreenUI;
+    [SerializeField] private bool isLastLevel = false;
 
     [Header("Scenes")]
     [SerializeField] private string currentLevelName = "Level1";
@@ -22,6 +24,9 @@ public class FinishScreenManager : MonoBehaviour
 
         if (finishScreenUI != null)
             finishScreenUI.SetActive(false);
+
+        if (winScreenUI != null)
+            winScreenUI.SetActive(false);
     }
 
     public void CompleteLevel()
@@ -39,8 +44,16 @@ public class FinishScreenManager : MonoBehaviour
         if (playerMovement != null)
             playerMovement.enabled = false;
 
-        if (finishScreenUI != null)
-            finishScreenUI.SetActive(true);
+        if (isLastLevel)
+        {
+            if (winScreenUI != null)
+                winScreenUI.SetActive(true);
+        }
+        else
+        {
+            if (finishScreenUI != null)
+                finishScreenUI.SetActive(true);
+        }
 
         Time.timeScale = 0f;
     }
