@@ -1,4 +1,0 @@
-repository "GoldDiggers2D/GoldDiggers2D@7972542388411@cloud"
-  path "/"
-    br "/main"
-    co "/main"

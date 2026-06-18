@@ -20,12 +20,20 @@ public class NPCInteractable : MonoBehaviour
     [Header("Behaviour")]
     [SerializeField] private bool disappearAfterDialogue = false;
 
+    [Header("Dialogue Flow")]
+    [SerializeField] private KeyCode skipKey = KeyCode.Space;
+    [SerializeField] private float lineDuration = 3f;
+
     private bool playerInRange = false;
     private bool isTalking = false;
+    private bool isFairy = false;
     private Coroutine dialogueCoroutine;
 
     private void Start()
     {
+        // Fairies float around for ambience and should stick around after talking.
+        isFairy = GetComponent<FairyFloat>() != null;
+
         if (speechBubbleObject != null)
             speechBubbleObject.SetActive(false);
 
@@ -60,16 +68,32 @@ public class NPCInteractable : MonoBehaviour
         if (playerMovement != null)
             playerMovement.enabled = false;
 
+        // Freeze the whole world (enemies, projectiles, physics, ambience) while talking.
+        Time.timeScale = 0f;
+
         speechBubbleObject.SetActive(true);
 
         for (int i = 0; i < dialogueLines.Length; i++)
         {
             speechText.text = dialogueLines[i];
-            yield return new WaitForSeconds(3f);
+
+            // Wait one unscaled frame first so the key press that advanced the
+            // previous line doesn't instantly skip this one too.
+            yield return null;
+
+            float elapsed = 0f;
+            while (elapsed < lineDuration && !Input.GetKeyDown(skipKey))
+            {
+                elapsed += Time.unscaledDeltaTime;
+                yield return null;
+            }
         }
 
         speechText.text = "";
         speechBubbleObject.SetActive(false);
+
+        // Resume the world now that the conversation is over.
+        Time.timeScale = 1f;
 
         if (playerMovement != null)
             playerMovement.enabled = true;
@@ -77,7 +101,7 @@ public class NPCInteractable : MonoBehaviour
         isTalking = false;
         dialogueCoroutine = null;
 
-        if (disappearAfterDialogue)
+        if (disappearAfterDialogue && !isFairy)
         {
             if (interactPromptObject != null)
                 interactPromptObject.SetActive(false);
@@ -117,6 +141,9 @@ public class NPCInteractable : MonoBehaviour
             {
                 StopCoroutine(dialogueCoroutine);
                 dialogueCoroutine = null;
+
+                // The coroutine was killed before it could unfreeze, so do it here.
+                Time.timeScale = 1f;
             }
 
             if (speechText != null)

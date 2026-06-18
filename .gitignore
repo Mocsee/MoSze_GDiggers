@@ -1,15 +1,52 @@
+# ---- Unity generated ----
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
 /[Bb]uild/
-<<<<<<< HEAD
 /[Bb]uilds/
 /[Ll]ogs/
+/[Uu]ser[Ss]ettings/
 /[Mm]emoryCaptures/
+/[Rr]ecordings/
+crashlytics-build.properties
+
+# ---- Visual Studio / Rider / VS Code (auto-generated) ----
 .vs/
-=======
-/[Log]s/
-/[Uu]serSettings/
+.vscode/
+.idea/
 *.csproj
 *.sln
->>>>>>> c4b330917d8a0fa4e756655ba8e88265c30f84bb
+*.slnx
+*.suo
+*.user
+*.userprefs
+*.unityproj
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# ---- Plastic SCM ----
+/.plastic/
+*.private.*
+plastic.selector
+ignore.conf
+
+# ---- OS files ----
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ---- Local tooling / notes ----
+.claude/
+CLAUDE.md
+claude_summary.md
+.cursor/
+.cursorrules
+*.aider*
