@@ -26,6 +26,12 @@ public class NPCInteractable : MonoBehaviour
     [SerializeField] private KeyCode skipKey = KeyCode.Space;  // Ezzel a gombbal lehet a következő sorra ugrani (átléptetés)
     [SerializeField] private float lineDuration = 3f;         // Mennyi ideig látszódjon egy sor magától, ha nem nyomnak gombot
 
+    [Header("Interact Prompt")]
+    [SerializeField] private string interactPromptMessage = "Nyomd meg az E-t!"; // A közelség-felirat szövege (ha automatikusan jön létre)
+    [SerializeField] private Vector3 interactPromptOffset = new Vector3(0f, 3f, 0f); // A felirat eltolása az NPC fölé (világ-egységben)
+    [SerializeField] private float interactPromptFontSize = 28f; // A felirat betűmérete
+    [SerializeField] private Color interactPromptColor = Color.white; // A felirat színe
+
     // --- PRIVÁT BELSŐ VÁLTOZÓK ---
 
     private bool playerInRange = false;     // A közelben van-e a játékos
@@ -39,21 +45,63 @@ public class NPCInteractable : MonoBehaviour
         // A tündérek a hangulatért lebegnek, és beszéd után sem tűnnek el
         isFairy = GetComponent<FairyFloat>() != null;
 
-        // Induláskor elrejtjük a szövegbuborékot
-        if (speechBubbleObject != null)
-            speechBubbleObject.SetActive(false);
-
-        // Induláskor elrejtjük az interakciós feliratot is
-        if (interactPromptObject != null)
-            interactPromptObject.SetActive(false);
-
         // Ha nem adtunk meg sprite-ot, megpróbáljuk a sajátunkat használni
         if (npcSprite == null)
             npcSprite = GetComponent<SpriteRenderer>();
 
+        // Ha az Inspectorban nincs interakciós felirat beállítva, automatikusan létrehozunk egyet
+        SetupInteractPrompt();
+
+        // Induláskor elrejtjük a szövegbuborékot
+        if (speechBubbleObject != null)
+            speechBubbleObject.SetActive(false);
+
+        // Induláskor elrejtjük az interakciós feliratot is (csak a játékos közelségére jelenik meg)
+        if (interactPromptObject != null)
+            interactPromptObject.SetActive(false);
+
         // Beállítjuk az alap színt
         if (npcSprite != null)
             npcSprite.color = normalColor;
+    }
+
+    // --- AZ INTERAKCIÓS FELIRAT ELŐKÉSZÍTÉSE ("Nyomd meg az E-t!") ---
+    private void SetupInteractPrompt()
+    {
+        // Ha az Inspectorban már beállítottunk egy feliratot, azt használjuk, nem hozunk létre újat
+        if (interactPromptObject != null) return;
+
+        // Létrehozunk egy új szövegobjektumot és az NPC gyermekévé tesszük (így együtt mozognak)
+        GameObject promptObject = new GameObject("InteractPrompt");
+        promptObject.transform.SetParent(transform, false);
+
+        // Ráteszünk egy TextMeshPro komponenst és beállítjuk a megjelenését
+        TextMeshPro promptText = promptObject.AddComponent<TextMeshPro>();
+        promptText.text = interactPromptMessage;
+        promptText.fontSize = interactPromptFontSize;
+        promptText.enableAutoSizing = false;
+        promptText.alignment = TextAlignmentOptions.Center;
+        promptText.color = interactPromptColor;
+        promptText.rectTransform.sizeDelta = new Vector2(20f, 4f);
+
+        // Beállítjuk, hogy a felirat az NPC sprite-ja FÖLÖTT (előtt) rajzolódjon ki
+        MeshRenderer promptRenderer = promptObject.GetComponent<MeshRenderer>();
+        if (promptRenderer != null)
+        {
+            if (npcSprite != null)
+                promptRenderer.sortingLayerID = npcSprite.sortingLayerID;
+            promptRenderer.sortingOrder = (npcSprite != null ? npcSprite.sortingOrder : 0) + 10;
+        }
+
+        // Kiegyenlítjük az NPC méretezését (hogy a szöveg ne torzuljon), és világ-egységben pozícionáljuk fölé
+        Vector3 lossy = transform.lossyScale;
+        float sx = Mathf.Approximately(lossy.x, 0f) ? 1f : lossy.x;
+        float sy = Mathf.Approximately(lossy.y, 0f) ? 1f : lossy.y;
+        promptObject.transform.localScale = new Vector3(1f / sx, 1f / sy, 1f);
+        promptObject.transform.localPosition = new Vector3(interactPromptOffset.x / sx, interactPromptOffset.y / sy, interactPromptOffset.z);
+
+        // Ezt a hivatkozást használja a kód a felirat meg-/elrejtéséhez
+        interactPromptObject = promptObject;
     }
 
     // --- FŐ LOGIKA (a párbeszéd indítása) ---

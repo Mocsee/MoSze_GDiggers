@@ -410,6 +410,8 @@ MonoBehaviour:
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   highlightColor: {r: 1, g: 1, b: 0.7, a: 1}
   disappearAfterDialogue: 0
+  skipKey: 32
+  lineDuration: 3
 --- !u!61 &89875411
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5270,7 +5272,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -6108127296159924502, guid: 93c41cdcf10c0684fb01d880c4b10a32, type: 3}
+  m_Sprite: {fileID: -848381713617584042, guid: f37ecdc7eaaa77841880995d5b152877, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -5324,7 +5326,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -260}
+  m_AnchoredPosition: {x: 0, y: -370}
   m_SizeDelta: {x: 420, y: 96}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &880000022
@@ -17537,6 +17539,11 @@ MonoBehaviour:
   disappearAfterSeconds: 10
   destroyGrabbedObject: 1
   fadeDuration: 0.5
+  tauntText: {fileID: 0}
+  tauntMessage: Sose kapsz el!
+  tauntOffset: {x: 0, y: 6, z: 0}
+  tauntFontSize: 36
+  tauntColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!61 &1354568736
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -20371,6 +20378,8 @@ MonoBehaviour:
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   highlightColor: {r: 1, g: 1, b: 0.7, a: 1}
   disappearAfterDialogue: 0
+  skipKey: 32
+  lineDuration: 3
 --- !u!61 &1772603831
 BoxCollider2D:
   m_ObjectHideFlags: 0
